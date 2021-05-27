@@ -20,6 +20,8 @@ class App extends React.Component {
 
   componentDidMount(){
     const {setCurrentUser} = this.props;
+
+    
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if(userAuth){
         const userRef = await createUserProfileDocument(userAuth);
@@ -29,23 +31,28 @@ class App extends React.Component {
             currentUser: snapshot.id,
             ...snapshot.data()
           });
-          console.log(this.state);
+          console.log(this.props.currentUser.displayName);
+          
         })
       }else{
         setCurrentUser(userAuth);
       }
     });
   }
+  
+  c
 
   componentWillUnmount(){
     this.unsubscribeFromAuth();
   }
+   
 
   render(){
     return( 
       <div>
         <Header/>
         <Switch>
+          
           <Route exact path='/' component = {HomePage} />
           <Route path='/shop' component = {ShopPage} />
           <Route exact path='/checkout' component = {CheckoutPage} />
@@ -59,9 +66,12 @@ class App extends React.Component {
       );
   }
 }
+
+
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser
 })
+
 
 
 const mapDispatchToProps = dispatch => ({
